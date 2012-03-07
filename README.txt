@@ -43,6 +43,8 @@ point.  The problem is: this isn't Pong as you know it.  Enough said.
 
 * (1 point) Draw a line (e.g., a dotted black line, a solid red line)
   dividing the playing surface, as in the real game of Pong.
+  
+  XXX
 
 * (1 point) Change the source so if the ball hits a wall (i.e.,
   someone scores), reset the ball to the middle of the playing surface

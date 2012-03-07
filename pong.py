@@ -34,6 +34,8 @@ ball_speed = [BALL_SPEED, BALL_SPEED]
 paddle_rect = pygame.Rect((PADDLE_START_X, PADDLE_START_Y), (PADDLE_WIDTH, PADDLE_HEIGHT))
 # player 2 paddle centered on right side
 paddle2_rect = pygame.Rect((PADDLE2_START_X, PADDLE2_START_Y), (PADDLE_WIDTH, PADDLE_HEIGHT))
+#middle line
+midline = pygame.Rect((400, 0), (5,600))
 
 # Scoring: 1 point if you hit the ball, -5 point if you miss the ball
 score = 0
@@ -41,6 +43,9 @@ score2 = 0
 
 #2players or 1?
 players = 1
+
+#gamestate
+gamestate = 0
 
 # Load the font for displaying the score
 font = pygame.font.Font(None, 30)
@@ -105,6 +110,7 @@ while True:
 	# Render the ball, the paddle, and the score
 	pygame.draw.rect(screen, (0, 0, 0), paddle_rect) # Your paddle
 	pygame.draw.rect(screen, (0, 0, 0), paddle2_rect)
+	pygame.draw.rect(screen, (255, 0, 0), midline)
 	pygame.draw.circle(screen, (0, 0, 0), ball_rect.center, ball_rect.width / 2) # The ball
 	score_text = font.render(str(score), True, (0, 0, 0))
 	screen.blit(score_text, ((SCREEN_WIDTH / 2) - font.size(str(score))[0] / 2 - 5, 5)) # The score
