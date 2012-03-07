@@ -49,10 +49,14 @@ point.  The problem is: this isn't Pong as you know it.  Enough said.
 * (1 point) Change the source so if the ball hits a wall (i.e.,
   someone scores), reset the ball to the middle of the playing surface
   and move the ball to the player who got scored on.
+  
+  XXX
 
 * (1 point) Change the source so if a player scores 11 points, the
   game is over.  That is, display who wins and prompt for a rematch.
   If rematch, reset the scores to 0 - 0.
+  
+  XXX
 
 * Either: (1 point) change your paddle to move using the "W" (up) and
 "S" (down) keys and use the UP and DOWN arrows for the opponent

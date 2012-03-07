@@ -44,6 +44,9 @@ score2 = 0
 #2players or 1?
 players = 1
 
+#winner number
+winner = 0
+
 #gamestate
 gamestate = 0
 
@@ -78,44 +81,77 @@ while True:
 	elif pygame.key.get_pressed()[pygame.K_ESCAPE]:
 		sys.exit(0)
 		pygame.quit()
+	elif pygame.key.get_pressed()[pygame.K_RETURN]:
+		gamestate +=1
 		
-	# Update ball position
-	ball_rect.left += ball_speed[0]
-	ball_rect.top += ball_speed[1]
+	if gamestate > 1:
+		gamestate = 0
+		
+	if gamestate == 0:
+		
+		# Update ball position
+		ball_rect.left += ball_speed[0]
+		ball_rect.top += ball_speed[1]
 
-	# Ball collision with rails
-	if ball_rect.top <= 0 or ball_rect.bottom >= SCREEN_HEIGHT:
-		ball_speed[1] = -ball_speed[1]
-	if ball_rect.right >= SCREEN_WIDTH:
-		ball_speed[0] = -ball_speed[0]
-		score += 1
-	elif ball_rect.left <= 0:
-		ball_speed[0] = -ball_speed[0]
-		score2 +=1
+		# Ball collision with rails
+		if ball_rect.top <= 0 or ball_rect.bottom >= SCREEN_HEIGHT:
+			ball_speed[1] = -ball_speed[1]
+		if ball_rect.right >= SCREEN_WIDTH:
+			ball_speed[0] = ball_speed[0]
+			score += 1
+			ball_rect = pygame.Rect((SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2), (BALL_WIDTH_HEIGHT, BALL_WIDTH_HEIGHT))
+			pygame.time.delay(500)
+		elif ball_rect.left <= 0:
+			ball_speed[0] = ball_speed[0]
+			score2 +=1
+			ball_rect = pygame.Rect((SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2), (BALL_WIDTH_HEIGHT, BALL_WIDTH_HEIGHT))
+			pygame.time.delay(750)
+		
 
-	# Test if the ball is hit by the paddle; if yes reverse speed and add a point
-	if paddle_rect.colliderect(ball_rect):
-		ball_speed[0] = -ball_speed[0]
-		pew = load_sound('laser.wav')
-		pew.play()
-	# Test if the ball is hit by player2 paddle
-	if paddle2_rect.colliderect(ball_rect):
-		ball_speed[0] = -ball_speed[0]
-		pew = load_sound('laser.wav')
-		pew.play()
+		# Test if the ball is hit by the paddle; if yes reverse speed and add a point
+		if paddle_rect.colliderect(ball_rect):
+			ball_speed[0] = -ball_speed[0]
+			pew = load_sound('laser.wav')
+			pew.play()
+		# Test if the ball is hit by player2 paddle
+		if paddle2_rect.colliderect(ball_rect):
+			ball_speed[0] = -ball_speed[0]
+			pew = load_sound('laser.wav')
+			pew.play()
+		
+		if score >= 11:
+			gamestate = 1
+			winner = 1
+		elif score2 >= 11: 
+			gamestate = 1
+			winner = 2
+			
 	
-	# Clear screen
-	screen.fill((255, 255, 255))
+		# Clear screen
+		screen.fill((255, 255, 255))
 
-	# Render the ball, the paddle, and the score
-	pygame.draw.rect(screen, (0, 0, 0), paddle_rect) # Your paddle
-	pygame.draw.rect(screen, (0, 0, 0), paddle2_rect)
-	pygame.draw.rect(screen, (255, 0, 0), midline)
-	pygame.draw.circle(screen, (0, 0, 0), ball_rect.center, ball_rect.width / 2) # The ball
-	score_text = font.render(str(score), True, (0, 0, 0))
-	screen.blit(score_text, ((SCREEN_WIDTH / 2) - font.size(str(score))[0] / 2 - 5, 5)) # The score
-	score_text2 = font.render(str(score2), True, (0, 0, 0))
-	screen.blit(score_text2, ((SCREEN_WIDTH/2) + font.size(str(score2))[0] / 2 + 5, 5)) #other score
+		# Render the ball, the paddle, and the score
+		pygame.draw.rect(screen, (0, 0, 0), paddle_rect) # Your paddle
+		pygame.draw.rect(screen, (0, 0, 0), paddle2_rect)
+		pygame.draw.rect(screen, (255, 0, 0), midline)
+		pygame.draw.circle(screen, (0, 0, 0), ball_rect.center, ball_rect.width / 2) # The ball
+		score_text = font.render(str(score), True, (0, 0, 0))
+		screen.blit(score_text, ((SCREEN_WIDTH / 2) - font.size(str(score))[0] / 2 - 5, 5)) # The score
+		score_text2 = font.render(str(score2), True, (0, 0, 0))
+		screen.blit(score_text2, ((SCREEN_WIDTH/2) + font.size(str(score2))[0] / 2 + 5, 5)) #other score
+	
+	elif gamestate == 1 and winner == 1:
+		game = font.render("ENTER TO REPLAY", True, (0,0,0))
+		screen.blit(game,((SCREEN_WIDTH/2) + 50, SCREEN_HEIGHT/2 + 50))
+		p1wins = font.render("PLAYER 1 WINS!", True, (0,0,0))
+		screen.blit(p1wins,((SCREEN_WIDTH/2), SCREEN_HEIGHT/2))
+		score = 0
+		score2 = 0
+	elif gamestate == 1 and winner == 2:
+		p2wins = font.render("PLAYER 2 WINS!", True, (0,0,0))
+		screen.blit(p2wins,((SCREEN_WIDTH/2), SCREEN_HEIGHT/2))
+		score = 0
+		score2 = 0
 	
 	# Update screen and wait 20 milliseconds
 	pygame.display.flip()
