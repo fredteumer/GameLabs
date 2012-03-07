@@ -17,19 +17,29 @@ point.  The problem is: this isn't Pong as you know it.  Enough said.
   top middle half of the left side of the board while the opponent's
   score shall be displayed at the top middle half of the right side of
   the board.
+  
+  XXX
 
 * (1 point) As of right now, if you miss the ball (that is, the ball
   hits your wall on the left), it bounces.  Change the source code so
   that if the ball hits your wall, the opponent scores a point.
+  
+  XXX
 
 * (1 point) Change the source code so that instead of receiving a
   point if your paddle hits the ball, you receive a point only if the
   ball hits the right wall.
+  
+  XXX
 
 * (1 point) When the ball collides with a paddle, play a sound (find
   one).
+  
+  XXX
 
 * (1 point) Implement a second paddle on the right side. :-) Duh!
+
+  XXX
 
 * (1 point) Draw a line (e.g., a dotted black line, a solid red line)
   dividing the playing surface, as in the real game of Pong.

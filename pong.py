@@ -1,10 +1,20 @@
 import pygame, sys
 
+def load_sound(sound_name):
+		try:
+			sound = pygame.mixer.Sound(sound_name)
+		except pygame.error, message:
+			print "Cannot load sound: " + sound_name
+			raise SystemExit, message
+		return sound
+
 # Constants
 SCREEN_WIDTH = 800
 SCREEN_HEIGHT = 600
 PADDLE_START_X = 10
 PADDLE_START_Y = 20
+PADDLE2_START_X = 780
+PADDLE2_START_Y = 300
 PADDLE_WIDTH = 10
 PADDLE_HEIGHT = 100
 BALL_SPEED = 10
@@ -22,9 +32,15 @@ ball_speed = [BALL_SPEED, BALL_SPEED]
 
 # Your paddle vertically centered on the left side
 paddle_rect = pygame.Rect((PADDLE_START_X, PADDLE_START_Y), (PADDLE_WIDTH, PADDLE_HEIGHT))
+# player 2 paddle centered on right side
+paddle2_rect = pygame.Rect((PADDLE2_START_X, PADDLE2_START_Y), (PADDLE_WIDTH, PADDLE_HEIGHT))
 
 # Scoring: 1 point if you hit the ball, -5 point if you miss the ball
 score = 0
+score2 = 0
+
+#2players or 1?
+players = 1
 
 # Load the font for displaying the score
 font = pygame.font.Font(None, 30)
@@ -44,6 +60,10 @@ while True:
 				paddle_rect.top = 0
 			elif paddle_rect.bottom >= SCREEN_HEIGHT:
 				paddle_rect.bottom = SCREEN_HEIGHT
+			#if paddle2_rect.top < 0:
+			#	paddle2_rect.top = 0
+			#elif paddle2_rect.bottom >= SCREEN_HEIGHT:
+			#	paddle2_rect.bottom = SCREEN_HEIGHT
 
 	# This test if up or down keys are pressed; if yes, move the paddle
 	if pygame.key.get_pressed()[pygame.K_UP] and paddle_rect.top > 0:
@@ -61,22 +81,35 @@ while True:
 	# Ball collision with rails
 	if ball_rect.top <= 0 or ball_rect.bottom >= SCREEN_HEIGHT:
 		ball_speed[1] = -ball_speed[1]
-	if ball_rect.right >= SCREEN_WIDTH or ball_rect.left <= 0:
+	if ball_rect.right >= SCREEN_WIDTH:
 		ball_speed[0] = -ball_speed[0]
+		score += 1
+	elif ball_rect.left <= 0:
+		ball_speed[0] = -ball_speed[0]
+		score2 +=1
 
 	# Test if the ball is hit by the paddle; if yes reverse speed and add a point
 	if paddle_rect.colliderect(ball_rect):
 		ball_speed[0] = -ball_speed[0]
-		score += 1
+		pew = load_sound('laser.wav')
+		pew.play()
+	# Test if the ball is hit by player2 paddle
+	if paddle2_rect.colliderect(ball_rect):
+		ball_speed[0] = -ball_speed[0]
+		pew = load_sound('laser.wav')
+		pew.play()
 	
 	# Clear screen
 	screen.fill((255, 255, 255))
 
 	# Render the ball, the paddle, and the score
 	pygame.draw.rect(screen, (0, 0, 0), paddle_rect) # Your paddle
+	pygame.draw.rect(screen, (0, 0, 0), paddle2_rect)
 	pygame.draw.circle(screen, (0, 0, 0), ball_rect.center, ball_rect.width / 2) # The ball
 	score_text = font.render(str(score), True, (0, 0, 0))
-	screen.blit(score_text, ((SCREEN_WIDTH / 2) - font.size(str(score))[0] / 2, 5)) # The score
+	screen.blit(score_text, ((SCREEN_WIDTH / 2) - font.size(str(score))[0] / 2 - 5, 5)) # The score
+	score_text2 = font.render(str(score2), True, (0, 0, 0))
+	screen.blit(score_text2, ((SCREEN_WIDTH/2) + font.size(str(score2))[0] / 2 + 5, 5)) #other score
 	
 	# Update screen and wait 20 milliseconds
 	pygame.display.flip()
