@@ -1,4 +1,5 @@
 import pygame, sys
+from random import randint
 
 def load_sound(sound_name):
 		try:
@@ -68,10 +69,7 @@ while True:
 				paddle_rect.top = 0
 			elif paddle_rect.bottom >= SCREEN_HEIGHT:
 				paddle_rect.bottom = SCREEN_HEIGHT
-			#if paddle2_rect.top < 0:
-			#	paddle2_rect.top = 0
-			#elif paddle2_rect.bottom >= SCREEN_HEIGHT:
-			#	paddle2_rect.bottom = SCREEN_HEIGHT
+			
 
 	# This test if up or down keys are pressed; if yes, move the paddle
 	if pygame.key.get_pressed()[pygame.K_UP] and paddle_rect.top > 0:
@@ -100,7 +98,7 @@ while True:
 			ball_speed[0] = ball_speed[0]
 			score += 1
 			ball_rect = pygame.Rect((SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2), (BALL_WIDTH_HEIGHT, BALL_WIDTH_HEIGHT))
-			pygame.time.delay(500)
+			pygame.time.delay(750)
 		elif ball_rect.left <= 0:
 			ball_speed[0] = ball_speed[0]
 			score2 +=1
@@ -118,6 +116,11 @@ while True:
 			ball_speed[0] = -ball_speed[0]
 			pew = load_sound('laser.wav')
 			pew.play()
+			
+		if paddle2_rect.top > 0:
+			paddle2_rect.top -= BALL_SPEED
+		elif paddle2_rect.bottom < SCREEN_HEIGHT:
+			paddle2_rect.top += BALL_SPEED
 		
 		if score >= 11:
 			gamestate = 1
@@ -125,7 +128,8 @@ while True:
 		elif score2 >= 11: 
 			gamestate = 1
 			winner = 2
-			
+		
+		paddle2_rect.top = ball_rect.top + randint(1, PADDLE_HEIGHT / 3)
 	
 		# Clear screen
 		screen.fill((255, 255, 255))

@@ -63,6 +63,8 @@ point.  The problem is: this isn't Pong as you know it.  Enough said.
 paddle, OR (1 point + 1 bonus point) make the opponent paddle play on
 its own. But don't make the opponent impossibly hard!
 
+  XXX
+
 * (1 point) Push your work to your GitHub account.
 
 #Submission#
